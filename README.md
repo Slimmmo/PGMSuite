@@ -32,4 +32,4 @@ Line 12 : `(pokemon.attack + pokemon.defence + pokemon.stamina) / 0.45 < 82) {`
 
 Means anything over 82% IVs (top tier appraisals) will be shown. Changing the 82 to any number will work.
 
-To get it to show all pokemon change the number to -7 or more negative (-8 etc).
+To get it to show all Pokemon change the number to -7 or more negative (-8 etc). When the IV check errors it is stored by the site as having an IV of -1,-1,-1 which is -6.666...%.
