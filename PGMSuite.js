@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         PGMSuite
-// @author       https://github.com/Slimmmo
+// @homepage     https://github.com/Slimmmo/PGMSuite/
 // @namespace    PGMSuite
 // @version      1
 // @match        https://*pogomap.com/*
@@ -39,6 +39,8 @@ function postDiscord(p) {
         url: webhookURL
     });
 }
+
+// Inject this code into the site's code
 
 addJS_Node (indexOfPokemons);
 addJS_Node (postDiscord);
