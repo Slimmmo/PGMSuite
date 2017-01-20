@@ -2,10 +2,10 @@
 \*pogomap site enhancements
 
 # What it does
-1. Adds the ability to filter IVs in a very basic way.
+1. Adds support to filter IVs in a very basic way.
 2. Adds support to post to Discord when it sees a new Pokemon.
 
-WARNING: If Discord posts are enabled it will post every Pokemon it sees to Discord!
+WARNING: If Discord posts are enabled it will post every Pokemon it sees to Discord! This will quickly become overwhelming if filters are turned off on the site and the IV filters are too low.
 
 # How to use
 ## Basic Setup
@@ -30,6 +30,6 @@ Change this to `true` to apply the filters to everything.
 
 Line 12 : `(pokemon.attack + pokemon.defence + pokemon.stamina) / 0.45 < 82) {`
 
-Means anything over 82% IVs will be shown. Changing the 82 to any number will work.
+Means anything over 82% IVs (top tier appraisals) will be shown. Changing the 82 to any number will work.
 
 To get it to show all pokemon change the number to -7 or more negative (-8 etc).
