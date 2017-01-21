@@ -19,7 +19,9 @@ function indexOfPokemons(pokemon, pokemons) {
             }
         }
     }
-    postDiscord(pokemon);
+    if (document.getElementById('cb').checked) {
+        postDiscord(pokemon);
+    }
     return -1;
 }
 
@@ -40,8 +42,17 @@ function postDiscord(p) {
     });
 }
 
+var cb = document.createElement('input');
+cb.type = 'checkbox';
+cb.id = 'cb';
+var lab = document.createElement('label');
+lab.htmlFor = 'cb';
+lab.appendChild(document.createTextNode('Enable Discord'));
+
 // Inject this code into the site's code
 
+document.getElementById('topbar').appendChild(cb);
+document.getElementById('topbar').appendChild(lab);
 addJS_Node (indexOfPokemons);
 addJS_Node (postDiscord);
 
