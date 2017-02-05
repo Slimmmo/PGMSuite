@@ -66,7 +66,6 @@ function saveWebhook() {
 
 function updateIV(val) {
     localStorage.setItem('iv_' + val, document.getElementById('iv_' + val).value);
-    console.log(localStorage.getItem('iv_' + val));
 }
 
 // do I really need to redefine the whole function?
