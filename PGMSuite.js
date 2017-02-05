@@ -1,4 +1,11 @@
-// @homepage	 https://github.com/Slimmmo/PGMSuite/
+// ==UserScript===
+// @name         PGMSuite
+// @homepage     https://github.com/Slimmmo/PGMSuite/
+// @namespace    PGMSuite
+// @version      1
+// @include      https://*pogomap.com/*
+// @grant        none
+// ==/UserScript==
 
 function indexOfPokemons(pokemon, pokemons) {
 	if (!showPokemon(pokemon)) {
