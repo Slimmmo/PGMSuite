@@ -9,12 +9,12 @@ WARNING: If Discord posts are enabled it will post every Pokemon it sees to Disc
 
 # How to use
 ## Basic Setup
-1. Download [PGMSuite.js](https://raw.githubusercontent.com/Slimmmo/PGMSuite/master/PGMSuite.js)
+1. Download [PGMSuite_user.js](https://raw.githubusercontent.com/Slimmmo/PGMSuite/master/PGMSuite_user.js)
 2. Install a userscript manager if you do not already have one.
 My recommendations: 
 [TamperMonkey for Chrome](https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo?hl=en)
 [GreaseMonkey for Firefox](https://addons.mozilla.org/en-US/firefox/addon/greasemonkey/)
-3. Load PGMSuite.js
+3. Load PGMSuite_user.js
 4. Refresh the pogomap site.
 5. If you wish to use the Discord notifications, read point 4 Webhook URL below.
 
