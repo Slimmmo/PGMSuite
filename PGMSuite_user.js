@@ -3,7 +3,8 @@
 // @homepage     https://github.com/Slimmmo/PGMSuite/
 // @namespace    PGMSuite
 // @version      1
-// @include      /^https:\/\/.*po(go|ke)map\.com\/*/
+// @include      /^https?:\/\/.*po(go|ke)map\.com\/*/
+// @exclude	 http://www.lapogomap.com/*
 // @grant        none
 // ==/UserScript==
 
