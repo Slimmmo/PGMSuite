@@ -2,7 +2,7 @@
 // @name         PGMSuite
 // @homepage     https://github.com/Slimmmo/PGMSuite/
 // @namespace    PGMSuite
-// @version      1
+// @version      1.0.1
 // @include      /^https?:\/\/.*po(go|ke)map\.com\/*/
 // @exclude	 http://www.lapogomap.com/*
 // @grant        none
@@ -139,7 +139,9 @@ function modifyHTML() {
     fcb.type = 'checkbox';
     fcb.id = 'fcb';
     fcb.onchange = saveIVEverything;
-    fcb.checked = localStorage.getItem('iv_everything') || false;
+    if (localStorage.getItem('iv_everything') == 'true') {
+        fcb.checked = true;
+    }
     var flab = document.createElement('label');
     flab.htmlFor = 'fcb';
     flab.appendChild(document.createTextNode('IV filter everything'));
