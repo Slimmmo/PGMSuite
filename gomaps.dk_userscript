@@ -1,0 +1,52 @@
+// ==UserScript==
+// @name         gomaps.dk Discord
+// @namespace    GMDKDiscord
+// @version      1
+// @include      https://gomaps.dk/*
+// @grant        none
+// ==/UserScript==
+
+function postDiscord(pString, lat, lng) {
+	var text = pString + ' http://maps.google.com/maps?q=' + lat + ',' + lng + '&zoom=14';
+	$.ajax({
+        data: 'content=' + text,
+        dataType: 'json',
+        processData: false,
+        type: 'POST',
+        url: '<YOUR WEBHOOK HERE>'
+    });
+}
+
+function sendNotification(a, b, c, d, e) {
+    if (!("Notification" in window)) return !1;
+    if ("granted" !== Notification.permission) Notification.requestPermission();
+    else {
+        var f = new Notification(a, {
+            icon: c,
+            body: b,
+            sound: "sounds/ding.mp3"
+        });
+        f.onclick = function() {
+            window.focus(), f.close(), centerMap(d, e, 20)
+        }
+		postDiscord(a, d, e);
+    }
+}
+
+addJS_Node (postDiscord);
+addJS_Node (sendNotification);
+
+function addJS_Node (text, s_URL, funcToRun, runOnLoad) {
+    var D                                   = document;
+    var scriptNode                          = D.createElement ('script');
+    if (runOnLoad) {
+        scriptNode.addEventListener ("load", runOnLoad, false);
+    }
+    scriptNode.type                         = "text/javascript";
+    if (text)       scriptNode.textContent  = text;
+    if (s_URL)      scriptNode.src          = s_URL;
+    if (funcToRun)  scriptNode.textContent  = '(' + funcToRun.toString() + ')()';
+
+    var targ = D.getElementsByTagName ('head')[0] || D.body || D.documentElement;
+    targ.appendChild (scriptNode);
+}
