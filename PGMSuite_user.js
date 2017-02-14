@@ -2,7 +2,7 @@
 // @name         PGMSuite
 // @homepage     https://github.com/Slimmmo/PGMSuite/
 // @namespace    PGMSuite
-// @version      1.0.1
+// @version      1.0.2
 // @include      /^https?:\/\/.*po(go|ke)map\.com\/*/
 // @exclude	 http://www.lapogomap.com/*
 // @grant        none
