@@ -28,9 +28,9 @@ function indexOfPokemons(pokemon, pokemons) {
 function showPokemon(p) {
 	var iv = (p.attack + p.defence + p.stamina) / 0.45;
     if (document.getElementById('iv_' + p.id).value !== '') {
-        return iv > document.getElementById('iv_' + p.id).value;
+        return iv >= document.getElementById('iv_' + p.id).value;
     } else if (document.getElementById('fcb').checked || !isPokemonChecked(p.id)) {
-        return iv > document.getElementById('iiv').value;
+        return iv >= document.getElementById('iiv').value;
     } else {
         return true;
     }
