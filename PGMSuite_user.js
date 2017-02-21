@@ -119,10 +119,10 @@ function modifyHTML() {
 	document.getElementById('topbar').appendChild(iwh);
 	document.getElementById('topbar').appendChild(wlab);
 
-	document.getElementById('map').style.top = '';
+	/*document.getElementById('map').style.top = '';
 	document.getElementById('map').style.bottom = '';
 	document.getElementById('filter_settings').style.top = '50px';
-	document.getElementById('locate').style.top = '50px';
+	document.getElementById('locate').style.top = '50px';*/
 }
 
 function postDiscord(p) {
