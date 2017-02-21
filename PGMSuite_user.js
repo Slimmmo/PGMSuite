@@ -2,7 +2,7 @@
 // @name		PGMSuite
 // @homepage	https://github.com/Slimmmo/PGMSuite/
 // @namespace	PGMSuite
-// @version		1.0.3
+// @version		1.0.4
 // @include		/^https?:\/\/.*po(go|ke)map\.com\/*/
 // @exclude		http://www.lapogomap.com/*
 // @grant		none
@@ -225,6 +225,38 @@ function updateIV(pid) {
 		localStorage.removeItem('iv_' + pid);
 	}
 }
+
+$('#select_all_btn').unbind('click');
+$('#select_all_btn').bind('click', function() {
+	var shouldCheckAll = true;
+	shouldCheckAll = confirm("Show all Pokémon will make your page laggy. Proceed?");
+	if (shouldCheckAll) {
+		$(".filter_checkbox input[type=checkbox]").each(function() {
+			var tmpPokemon = pokeDict[$(this).val()];
+			if (tmpPokemon['show_filter']) {
+				$(this).prop('checked', true);
+			}
+		});
+		for (var key in pokeDict) {
+			if (pokeDict[key]['show_filter']) {
+				checkPokemon(key);
+			}
+		}
+		inserted = 0;
+		reloadPokemons();
+	}
+});
+$('#deselect_all_btn').unbind('click');
+$('#deselect_all_btn').bind('click', function() {
+	$(".filter_checkbox input[type=checkbox]").each(function() {
+		$(this).prop('checked', false);
+	});
+	for (var key in pokeDict) {
+		uncheckPokemon(key);
+	}
+	inserted = 0;
+	reloadPokemons();
+});
 
 // Inject this code into the site's scope
 
