@@ -27,9 +27,11 @@ function sendNotification(a, b, c, d, e) {
             sound: "sounds/ding.mp3"
         });
         f.onclick = function() {
-            window.focus(), f.close(), centerMap(d, e, 20)
+            window.focus();
+	    f.close();
+	    centerMap(d, e, 20);
         }
-		postDiscord(a, d, e);
+	postDiscord(a, d, e);
     }
 }
 
