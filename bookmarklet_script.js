@@ -113,8 +113,8 @@ function showPokemon(p) {
 	}
 	if (lsVal !== null) {
 		return iv >= lsVal;
-	} else if (document.getElementById('fcb').checked || !isPokemonChecked(p.id)) {
-		return iv >= document.getElementById('iiv').value;
+	} else if (!isPokemonChecked(p.id)) {
+		return iv >= 82;
 	} else {
 		return true;
 	}
