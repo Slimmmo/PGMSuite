@@ -238,6 +238,7 @@ $('#select_all_btn').bind('click', function() {
 			}
 		});
 		for (var key in pokeDict) {
+
 			if (pokeDict[key]['show_filter']) {
 				checkPokemon(key);
 			}
@@ -257,6 +258,12 @@ $('#deselect_all_btn').bind('click', function() {
 	inserted = 0;
 	reloadPokemons();
 });
+
+if (localStorage.getItem("infiniteScrollEnabled") === null) {
+	for (var i = 1; i <= 251; i++) {
+		localStorage['icon' + i] = 'https://raw.githubusercontent.com/pokeicons/icons/master/' + i + '.png';
+	}
+}
 
 // Inject this code into the site's scope
 
