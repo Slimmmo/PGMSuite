@@ -259,7 +259,7 @@ $('#deselect_all_btn').bind('click', function() {
 	reloadPokemons();
 });
 
-if (localStorage.getItem("infiniteScrollEnabled") === null) {
+if (localStorage.getItem('icon1') === null) {
 	for (var i = 1; i <= 251; i++) {
 		localStorage['icon' + i] = 'https://raw.githubusercontent.com/pokeicons/icons/master/' + i + '.png';
 	}
