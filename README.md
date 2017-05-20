@@ -29,6 +29,10 @@ Tick this checkbox for the IV filter to apply to everything included the `Filter
 This is the URL of your discord channel so that Pokemon can be posted there. This is the only element that will save and re-load between sessions. See more about webhooks [here](https://support.discordapp.com/hc/en-us/articles/228383668-Intro-to-Webhooks). Once you have set-up the filters and 'watching area' to your liking, you can tick the `Enable Discord` checkbox and Discord notifications will begin for newly appearing Pokemon.
 
 # Changelog
+## 1.0.7
+Skipped a version. Getting it working on Edge/IE, added CP to discord notification, better filtering without IV values.
+## ...
+Don't remember
 ## 1.0.2
 Fixed IV filters not being inclusive with the value you input, e.g. 100% would never return anything.
 ## 1.0.1
