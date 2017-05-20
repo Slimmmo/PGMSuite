@@ -2,7 +2,8 @@
 // @name		PGMSuite
 // @homepage	https://github.com/Slimmmo/PGMSuite/
 // @namespace	PGMSuite
-// @version		1.0.5
+// @version		1.0.7
+// @require		https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js
 // @include		/^https?:\/\/.*po(go|ke)map\.com\/*/
 // @exclude		http://www.lapogomap.com/*
 // @grant		none
@@ -60,7 +61,7 @@ function indexOfPokemons(pokemon, pokemons) {
 			}
 		}
 	}
-	if (document.getElementById('icb').checked && isInBounds(pokemon.center)) {
+	if ($('#icb').is(':checked') && isInBounds(pokemon.center)) {
 		postDiscord(pokemon);
 	}
 	return -1;
@@ -78,8 +79,8 @@ function modifyHTML() {
 	clab.htmlFor = 'icb';
 	clab.appendChild(document.createTextNode('Enable Discord'));
 	clab.style.cssText = 'padding-right: 7px';
-	document.getElementById('topbar').appendChild(icb);
-	document.getElementById('topbar').appendChild(clab);
+	$('#topbar').append(icb);
+	$('#topbar').append(clab);
 
 	var iiv = document.createElement('input');
 	iiv.type = 'number';
@@ -92,8 +93,8 @@ function modifyHTML() {
 	nlab.htmlFor = 'iiv';
 	nlab.appendChild(document.createTextNode('IV %'));
 	nlab.style.cssText = 'padding-right: 7px';
-	document.getElementById('topbar').appendChild(iiv);
-	document.getElementById('topbar').appendChild(nlab);
+	$('#topbar').append(iiv);
+	$('#topbar').append(nlab);
 
 	var fcb = document.createElement('input');
 	fcb.type = 'checkbox';
@@ -104,8 +105,8 @@ function modifyHTML() {
 	flab.htmlFor = 'fcb';
 	flab.appendChild(document.createTextNode('IV filter everything'));
 	flab.style.cssText = 'padding-right: 7px';
-	document.getElementById('topbar').appendChild(fcb);
-	document.getElementById('topbar').appendChild(flab);
+	$('#topbar').append(fcb);
+	$('#topbar').append(flab);
 
 	var iwh = document.createElement('input');
 	iwh.type = 'text';
@@ -116,25 +117,25 @@ function modifyHTML() {
 	var wlab = document.createElement('label');
 	wlab.htmlFor = 'iwh';
 	wlab.appendChild(document.createTextNode('Webhook URL'));
-	document.getElementById('topbar').appendChild(iwh);
-	document.getElementById('topbar').appendChild(wlab);
+	$('#topbar').append(iwh);
+	$('#topbar').append(wlab);
 
-	/*document.getElementById('map').style.top = '';
-	document.getElementById('map').style.bottom = '';
-	document.getElementById('filter_settings').style.top = '50px';
-	document.getElementById('locate').style.top = '50px';*/
+	/*$('#map').css('top','');
+	$('#map').css('bottom','');
+	$('#filter_settings').css('top','50px');
+	$('#locate').css('top','50px');*/
 }
 
 function postDiscord(p) {
 	var date = new Date(p.despawn * 1000);
 	var dateString = date.getHours() + ':' + ("0" + date.getMinutes()).substr(-2) + ':' + ("0" + date.getSeconds()).substr(-2);
-	var text = getPokemonName(p) + ' ' + Math.floor((p.attack + p.defence + p.stamina) / 0.45) + '% with ' + getMoveName(p.move1) + ', ' + getMoveName(p.move2) + ' until ' + dateString + ' at http://maps.google.com/maps?q=' + p.center.lat + ',' + p.center.lng + '&zoom=14';
+	var text = getPokemonName(p) + ' ' + (p.cp == -1 ? '' : '(' + p.cp + ' CP)') + Math.floor((p.attack + p.defence + p.stamina) / 0.45) + '% with ' + getMoveName(p.move1) + ', ' + getMoveName(p.move2) + ' until ' + dateString + ' at http://maps.google.com/maps?q=' + p.center.lat + ',' + p.center.lng + '&zoom=14';
 	$.ajax({
 		data: 'content=' + text,
 		dataType: 'json',
 		processData: false,
 		type: 'POST',
-		url: document.getElementById('iwh').value
+		url: $('#iwh').val()
 	});
 }
 
@@ -143,25 +144,25 @@ function refreshPokemons() {
 		return; //don't update when map is moving
 	}
 	var toBeRemovedIndexes = [];
+	var currentPokemon, marker, i;
 	var currentUnixTime = Math.floor(Date.now() / 1000) - timeOffset;
-	for (var i = 0; i < pokemons.length; ++i) {
-		var currentPokemon = pokemons[i];
+	for (i = 0; i < pokemons.length; ++i) {
+		currentPokemon = pokemons[i];
 		if (currentPokemon.despawn < currentUnixTime - 10 || (!isPokemonChecked(currentPokemon.id) && !shouldTurnFilterOff()) || !showPokemon(currentPokemon)) {
 			toBeRemovedIndexes.push(i);
 		}
 	}
-
-	for (var i = toBeRemovedIndexes.length - 1; i >= 0; --i) {
+	for (i = toBeRemovedIndexes.length - 1; i >= 0; --i) {
 		pokemons.splice(toBeRemovedIndexes[i], 1);
-		var marker = markers[toBeRemovedIndexes[i]];
+		marker = markers[toBeRemovedIndexes[i]];
 		marker.removeFrom(map);
 		markers.splice(toBeRemovedIndexes[i], 1);
 	}
 	//remove low IV from map, add high IV to map
-	for (var i = 0; i < pokemons.length; ++i) {
-		var currentPokemon = pokemons[i];
+	for (i = 0; i < pokemons.length; ++i) {
+		currentPokemon = pokemons[i];
 		var ivPercentage = (currentPokemon.attack + currentPokemon.defence + currentPokemon.stamina) / 45 * 100;
-		var marker = markers[i];
+		marker = markers[i];
 		var min_iv_compare = min_iv;
 		//to let unknown iv show
 		if (min_iv === 0) {
@@ -178,7 +179,7 @@ function refreshPokemons() {
 		}
 	}
 	if (shouldShowTimers()) {
-		for (var i = 0; i < markers.length; ++i) {
+		for (i = 0; i < markers.length; ++i) {
 			//only update for the ones in bounds
 			var mapBounds = map.getBounds();
 			var tmpMarker = markers[i];
@@ -190,15 +191,15 @@ function refreshPokemons() {
 }
 
 function saveIVEverything() {
-	localStorage.setItem('iv_everything', document.getElementById('fcb').checked);
+	localStorage.setItem('iv_everything', $('#fcb').is(':checked'));
 }
 
 function saveIVValue() {
-	localStorage.setItem('iv_value', document.getElementById('iiv').value);
+	localStorage.setItem('iv_value', $('#iiv').val());
 }
 
 function saveWebhook() {
-	localStorage.setItem('whURL', document.getElementById('iwh').value);
+	localStorage.setItem('whURL', $('#iwh').val());
 }
 
 function showPokemon(p) {
@@ -208,18 +209,20 @@ function showPokemon(p) {
 		lsVal = null;
 		localStorage.removeItem('iv_' + p.id);
 	}
-	if (lsVal !== null) {
+    if (localStorage.getItem('filterOff') == '1') {
+        return true;
+    } else if (lsVal !== null) {
 		return iv >= lsVal;
-	} else if (document.getElementById('fcb').checked || !isPokemonChecked(p.id)) {
-		return iv >= document.getElementById('iiv').value;
+	} else if ($('#fcb').is(':checked') || !isPokemonChecked(p.id)) {
+		return iv >= $('#iiv').val();
 	} else {
 		return true;
 	}
 }
 
 function updateIV(pid) {
-	var val = document.getElementById('iv_' + pid).value;
-	if (val !== '' && val != 0) {
+	var val = $('#iv_' + pid).val();
+	if (val !== '' && val !== 0) {
 		localStorage.setItem('iv_' + pid, val);
 	} else {
 		localStorage.removeItem('iv_' + pid);
@@ -233,13 +236,12 @@ $('#select_all_btn').bind('click', function() {
 	if (shouldCheckAll) {
 		$(".filter_checkbox input[type=checkbox]").each(function() {
 			var tmpPokemon = pokeDict[$(this).val()];
-			if (tmpPokemon['show_filter']) {
+			if (tmpPokemon.show_filter) {
 				$(this).prop('checked', true);
 			}
 		});
 		for (var key in pokeDict) {
-
-			if (pokeDict[key]['show_filter']) {
+			if (pokeDict[key].show_filter) {
 				checkPokemon(key);
 			}
 		}
@@ -259,7 +261,7 @@ $('#deselect_all_btn').bind('click', function() {
 	reloadPokemons();
 });
 
-if (localStorage.getItem('icon1') === null) {
+if (localStorage.getItem("infiniteScrollEnabled") === null) {
 	for (var i = 1; i <= 251; i++) {
 		localStorage['icon' + i] = 'https://raw.githubusercontent.com/pokeicons/icons/master/' + i + '.png';
 	}
