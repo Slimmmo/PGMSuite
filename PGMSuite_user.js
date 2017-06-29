@@ -6,6 +6,7 @@
 // @require		https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js
 // @include		/^https?:\/\/.*po(go|ke)map\.com\/*/
 // @exclude		http://www.lapogomap.com/*
+// @exclude		.*/gym.html
 // @grant		none
 // ==/UserScript==
 
