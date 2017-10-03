@@ -29,9 +29,11 @@ Tick this checkbox for the IV filter to apply to everything included the `Filter
 4. Webhook URL
 This is the URL of your discord channel so that Pokemon can be posted there. This is the only element that will save and re-load between sessions. See more about webhooks [here](https://support.discordapp.com/hc/en-us/articles/228383668-Intro-to-Webhooks). Once you have set-up the filters and 'watching area' to your liking, you can tick the `Enable Discord` checkbox and Discord notifications will begin for newly appearing Pokemon.
 5. Google Maps API Key
-This is if you wish to show the address in addition to the Google maps link when posting on Discord. You'll need to get an API key from [here](https://developers.google.com/maps/documentation/javascript/get-api-key). After inserting the key, please refresh the page.
+This is if you wish to show the address in addition to the Google maps link when posting on Discord. You'll need to get an API key from [here](https://developers.google.com/maps/documentation/javascript/get-api-key). After inserting the key, please refresh the page. Current bug: at the moment you need to delete and re-insert the API key every few days for it to continue working.
 
 # Changelog
+## 1.08
+Added option to include street address in notifications. 
 ## 1.0.7
 Skipped a version. Getting it working on Edge/IE, added CP to discord notification, better filtering without IV values.
 ## ...
