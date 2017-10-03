@@ -2,7 +2,7 @@
 // @name		PGMSuite
 // @homepage	https://github.com/Slimmmo/PGMSuite/
 // @namespace	PGMSuite
-// @version		1.0.7
+// @version		1.0.8
 // @require		https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js
 // @include		/^https?:\/\/.*po(go|ke)map\.com\/*/
 // @exclude		http://www.lapogomap.com/*
@@ -114,12 +114,24 @@ function modifyHTML() {
 	iwh.id = 'iwh';
 	iwh.onchange = saveWebhook;
 	iwh.value = localStorage.getItem('whURL') || '';
-	iwh.style.cssText = 'max-width: 50px';
+	iwh.style.cssText = 'max-width: 50px; margin-right: 15px';
 	var wlab = document.createElement('label');
 	wlab.htmlFor = 'iwh';
 	wlab.appendChild(document.createTextNode('Webhook URL'));
-	$('#topbar').append(iwh);
 	$('#topbar').append(wlab);
+	$('#topbar').append(iwh);
+    
+	var gak = document.createElement('input');
+	gak.type = 'text';
+	gak.id = 'gak';
+	gak.onchange = saveGoogleApiKey;
+	gak.value = localStorage.getItem('gApiKey') || '';
+	gak.style.cssText = 'max-width: 50px';
+	var glab = document.createElement('label');
+	glab.htmlFor = 'gak';
+	glab.appendChild(document.createTextNode('Google Maps API Key'));
+	$('#topbar').append(glab);
+	$('#topbar').append(gak);
 
 	/*$('#map').css('top','');
 	$('#map').css('bottom','');
@@ -127,17 +139,38 @@ function modifyHTML() {
 	$('#locate').css('top','50px');*/
 }
 
+
 function postDiscord(p) {
-	var date = new Date(p.despawn * 1000);
-	var dateString = date.getHours() + ':' + ("0" + date.getMinutes()).substr(-2) + ':' + ("0" + date.getSeconds()).substr(-2);
-	var text = getPokemonName(p) + ' ' + (p.cp == -1 ? '' : '(' + p.cp + ' CP)') + Math.floor((p.attack + p.defence + p.stamina) / 0.45) + '% with ' + getMoveName(p.move1) + ', ' + getMoveName(p.move2) + ' until ' + dateString + ' at http://maps.google.com/maps?q=' + p.center.lat + ',' + p.center.lng + '&zoom=14';
-	$.ajax({
-		data: 'content=' + text,
-		dataType: 'json',
-		processData: false,
-		type: 'POST',
-		url: $('#iwh').val()
-	});
+    if (gmapsLoaded) {
+    var address = '';
+        geocoder.geocode({'location': {lat: p.center.lat, lng: p.center.lng}}, function(results, status) {
+            if (status === 'OK') {
+                if (results[0]) {
+                    address = results[0].formatted_address;
+                    postFromAddr(address);
+                } else {
+                    postFromAddr('');
+                }
+            } else {
+                postFromAddr('');
+            }
+        });
+    } else {
+        postFromAddr('');
+    }
+    function postFromAddr(addr){
+        var date = new Date(p.despawn * 1000);
+        var dateString = date.getHours() + ':' + ("0" + date.getMinutes()).substr(-2) + ':' + ("0" + date.getSeconds()).substr(-2);
+        var stats = p.cp == -1 ? '' : ('(' + p.cp + ' CP)') + Math.floor((p.attack + p.defence + p.stamina) / 0.45) + '% with ' + getMoveName(p.move1) + ', ' + getMoveName(p.move2);
+        var text = getPokemonName(p) + ' ' + stats + ' until ' + dateString + ' at ' + addr + ' http://maps.google.com/maps?q=' + p.center.lat + ',' + p.center.lng + '&zoom=14';
+        $.ajax({
+            data: 'content=' + text,
+            dataType: 'json',
+            processData: false,
+            type: 'POST',
+            url: $('#iwh').val()
+        });
+    }
 }
 
 function refreshPokemons() {
@@ -201,6 +234,10 @@ function saveIVValue() {
 
 function saveWebhook() {
 	localStorage.setItem('whURL', $('#iwh').val());
+}
+
+function saveGoogleApiKey() {
+	localStorage.setItem('gApiKey', $('#gak').val());
 }
 
 function showPokemon(p) {
@@ -268,9 +305,29 @@ if (localStorage.getItem("infiniteScrollEnabled") === null) {
 	}
 }
 
+function loadGMaps(apiKey) {
+  var script2 = document.createElement('script');
+  script2.type = 'text/javascript';
+  script2.innerHTML = 'function initializeGmaps() {';
+  script2.innerHTML += 'geocoder = new google.maps.Geocoder();';
+  script2.innerHTML += '}';
+  document.body.appendChild(script2);
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src = 'https://maps.googleapis.com/maps/api/js?key=' + apiKey + '&callback=initializeGmaps';
+  script.setAttribute("async", "");
+  script.setAttribute("defer", "");
+  document.body.appendChild(script);
+  gmapsLoaded = true;
+}
+
 // Inject this code into the site's scope
 
 modifyHTML();
+gmapsLoaded = false;
+if ($('#gak').val()) {
+    loadGMaps($('#gak').val());
+}
 addJS_Node(generateFilterList);
 addJS_Node(indexOfPokemons);
 addJS_Node(isInBounds);
