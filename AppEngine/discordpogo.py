@@ -1,12 +1,12 @@
-import datetime, requests, sys, time, webapp2
+import datetime, sys, time, webapp2
 sys.path.append('lib')
-from matplotlib.path import Path
+import requests
+from enum import Enum
 from constants import *
 from userVars import *
 
 seenList = []
 seenRaidList = []
-raidArea = Path(RAID_AREA, [ Path.MOVETO ] + [ Path.LINETO ] * (len(RAID_AREA) - 2) + [ Path.CLOSEPOLY ])
 
 class Scan(Enum):
 	RAID = 0
@@ -92,7 +92,8 @@ def isRaidValuable(raid):
 	return raid['level'] in RAIDS and (RAIDS[raid['level']] == None or raid['pokemon_id'] in RAIDS[raid['level']])
 
 def isRaidWithinBoundaries(raid):
-	return raidArea.contains_points([(raid['lat'], raid['lng'])])[0]
+	# TODO: currently only works with rectangles that dont go over the lat/lng boundaries where the sign flips
+	return raid['lat'] >= RAID_AREA['W'] and raid['lat'] <= RAID_AREA['W'] and raid['lng'] >= RAID_AREA['S'] and raid['lng'] <= RAID_AREA['N']
 
 def isRare(pok):
 	if pok['pokemon_id'] in POKEMON:
@@ -124,6 +125,7 @@ class Clear(webapp2.RequestHandler):
 class Pokemon(webapp2.RequestHandler):
 	def get(self):
 		global seenList
+		print('running mon')
 		response = requests.get(
 			url = getUrl(),
 			headers = { 'Referer': 'https://sydneypogomap.com/?forcerefresh' }
@@ -149,6 +151,7 @@ class Raids(webapp2.RequestHandler):
 		raidList = response.json()
 		if 'raids' not in raidList:
 			return
+		print(raidList)
 		for raid in raidList['raids']:
 			if not raid in seenRaidList:
 				seenRaidList.append(raid)

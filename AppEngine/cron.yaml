@@ -1,10 +1,10 @@
 cron:
 - description: pokemon scan job
-	url: /mon
-	schedule: every 1 mins
+  url: /mon
+  schedule: every 1 mins
 - description: raid scan job
-	url: /raids
-	schedule: every 2 mins
+  url: /raids
+  schedule: every 2 mins
 - description: clear scan job
-	url: /clear
-	schedule: every 5 mins
+  url: /clear
+  schedule: every 5 mins
