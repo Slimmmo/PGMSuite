@@ -23,10 +23,10 @@ GYM_NAMES = {
 	'-33.91795151.234829': 'Museum of Human Disease'
 }
 POKEMON_AREA = [
-	151.225326, # W
-	151.236956, # E
-	-33.919713, # S
-	-33.915349, # N
+	151.214829, # W
+	151.241834, # E
+	-33.926011, # S
+	-33.911816, # N
 ]
 # A value of 'None' means every spawn will be sent to Discord
 # The idea was to to be able to set a number and it will only send if IV% > number, currently not implemented
