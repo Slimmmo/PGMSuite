@@ -31,9 +31,9 @@ def getAddress(lat, lng):
 		for component in res[0]['address_components']:
 			for cType in component['types']:
 				if cType in locWhitelist:
-					resultArr.append(component['short_name'])
+					returnArr.append(component['short_name'])
 					break
-		if len(resultArr) == 0:
+		if len(returnArr) == 0:
 			return None
 		else:
 			return ' '.join(returnArr)
