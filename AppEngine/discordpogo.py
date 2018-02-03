@@ -78,7 +78,7 @@ def getDiscordString(type, obj):
 		]
 		addr = getAddress(obj['lat'], obj['lng'])
 		if addr is not None:
-			discordStrArray += addr + '.'
+			discordStrArray.append(addr + '.')
 	discordStrArray.append(getGoogleMapsURL(obj['lat'], obj['lng']))
 	return ' '.join(discordStrArray)
 
