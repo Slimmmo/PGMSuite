@@ -91,18 +91,24 @@ POKEMON = {
   288: None, # Vigoroth
   289: None, # Slaking
   295: None, # Exploud
-  305: None, # Lairon
   306: None, # Aggron
   308: None, # Medicham
   319: None, # Sharpedo
   321: None, # Wailord
+  328: None, # Trapinch
+  329: None, # Vibrava
+  330: None, # Flygon
   342: None, # Crawdaunt
-  344: None, # Claydol
+  346: None, # Cradily
+  348: None, # Armaldo
   349: None, # Feebas
   350: None, # Milotic
+  358: None, # Chimecho
   365: None, # Walrein
+  371: None, # Bagon
   372: None, # Shelgon
   373: None, # Salamence
+  374: None, # Beldum
   375: None, # Metang
   376: None, # Metagross
   377: None, # Regirock
