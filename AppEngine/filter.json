@@ -9,7 +9,6 @@
   "pokemon": {
     "Venusaur": null,
     "Charizard": null,
-    "Blastoise": null,
     "Raichu": null,
     "Arcanine": null,
     "Alakazam": null,
@@ -32,9 +31,6 @@
     "Mewtwo": null,
     "Mew": null,
 
-    "Meganium": null,
-    "Typhlosion": null,
-    "Feraligatr": null,
     "Togetic": null,
     "Mareep": null,
     "Flaaffy": null,
@@ -82,7 +78,6 @@
     "Bagon": null,
     "Shelgon": null,
     "Salamence": null,
-    "Beldum": null,
     "Metang": null,
     "Metagross": null,
     "Regirock": null,
