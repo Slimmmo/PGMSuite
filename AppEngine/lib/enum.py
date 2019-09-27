@@ -3,7 +3,7 @@
 # enum.py
 # Part of ‘enum’, a package providing enumerated types for Python.
 #
-# Copyright © 2007–2015 Ben Finney <ben+python@benfinney.id.au>
+# Copyright © 2007–2018 Ben Finney <ben+python@benfinney.id.au>
 # This is free software: you may copy, modify, and/or distribute this work
 # under the terms of the GNU General Public License as published by the
 # Free Software Foundation; version 3 of that license or any later version.
@@ -55,7 +55,7 @@ __author_email__ = "ben+python@benfinney.id.au"
 __author__ = "%(__author_name__)s <%(__author_email__)s>" % vars()
 
 _copyright_year_begin = "2007"
-__date__ = "2015-10-30"
+__date__ = "2018-08-22"
 _copyright_year_latest = __date__.split('-')[0]
 _copyright_year_range = _copyright_year_begin
 if _copyright_year_latest > _copyright_year_begin:
@@ -63,10 +63,10 @@ if _copyright_year_latest > _copyright_year_begin:
 __copyright__ = (
     "Copyright © %(_copyright_year_range)s"
     " %(__author_name__)s") % vars()
-__license__ = "Choice of GPL or Python license"
+__license__ = "GPL-3.0+"
 
-__url__ = "http://pypi.python.org/pypi/enum/"
-__version__ = "0.4.6"
+__url__ = "https://pypi.org/project/enum/"
+__version__ = "0.4.7"
 
 
 class EnumException(Exception):

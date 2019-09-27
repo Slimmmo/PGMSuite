@@ -43,7 +43,7 @@ def geocode(client, address=None, components=None, bounds=None, region=None,
     :type region: string
 
     :param language: The language in which to return results.
-    :type langauge: string
+    :type language: string
 
     :rtype: list of geocoding results.
     """
@@ -65,7 +65,7 @@ def geocode(client, address=None, components=None, bounds=None, region=None,
     if language:
         params["language"] = language
 
-    return client._request("/maps/api/geocode/json", params)["results"]
+    return client._request("/maps/api/geocode/json", params).get("results", [])
 
 
 def reverse_geocode(client, latlng, result_type=None, location_type=None,
@@ -85,7 +85,7 @@ def reverse_geocode(client, latlng, result_type=None, location_type=None,
     :type location_type: list of strings
 
     :param language: The language in which to return results.
-    :type langauge: string
+    :type language: string
 
     :rtype: list of reverse geocoding results.
     """
@@ -106,4 +106,4 @@ def reverse_geocode(client, latlng, result_type=None, location_type=None,
     if language:
         params["language"] = language
 
-    return client._request("/maps/api/geocode/json", params)["results"]
+    return client._request("/maps/api/geocode/json", params).get("results", [])

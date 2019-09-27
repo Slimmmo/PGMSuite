@@ -12,3 +12,7 @@ libraries:
   version: "2.5.2"
 - name: ssl
   version: latest
+- name: enum
+  version: latest
+- name: pytz
+  version: latest

@@ -1,5 +1,4 @@
-import datetime, math, sys, time, webapp2, logging
-sys.path.append('lib')
+import datetime, json, math, time, webapp2
 import googlemaps, pytz, requests
 from decimal import Decimal
 from enum import Enum
@@ -7,16 +6,30 @@ from constants import *
 from userVars import *
 from privateUserVars import *
 
-gmaps = googlemaps.Client(key = GMAP_API_KEY)
+GMAPS = googlemaps.Client(key = GMAP_API_KEY)
 
-seenList = []
-seenRaidList = []
+LATEST_ETAG = None
+# MAX_MON_ID = None
+# POKEMON = {}
+# RAIDS = {}
+SEEN_LIST = []
+SEEN_RAID_LIST = []
 
 class Scan(Enum):
 	RAID = 0
 	RARE_MON = 1
 	HIGH_MON = 2
 	PERFECT_MON = 3
+
+def findMaxMonID():
+	global MAX_MON_ID
+	for pID in POKEMON.keys():
+		try:
+			pIDX = int(pID)
+		except:
+			continue
+		if MAX_MON_ID is None or pIDX > MAX_MON_ID:
+			MAX_MON_ID = pIDX
 
 def getAddress(lat, lng):
 	locWhitelist = [
@@ -27,7 +40,7 @@ def getAddress(lat, lng):
 	]
 	returnArr = []
 	try:
-		res = gmaps.reverse_geocode((lat, lng))
+		res = GMAPS.reverse_geocode((lat, lng))
 		for component in res[0]['address_components']:
 			for cType in component['types']:
 				if cType in locWhitelist:
@@ -95,7 +108,7 @@ def getGymName(obj):
 def getHeaders(url):
 	return {
 		'Accept': '/',
-		'Accept-Encoding': 'gzip, deflate, br',
+    'Accept-Encoding': 'gzip, deflate', #, br
 		'Accept-Language': 'en-US,en;q=0.5',
 		'Host': 'sydneypogomap.com',
 		'Referer': url
@@ -117,7 +130,13 @@ def getPokemonName(pID):
 		return 'PokemonID: {}'.format(pID)
 		
 def getPokemonNameFromObj(pok):
-	return getPokemonName(int(pok['pokemon_id'])) + '' if ('form' not in pok or pok['form'] == '0') else ' - {}'.format(chr(int(pok['form']) + 64))
+	formName = ''
+	if 'form' in pok and pok['form'] != '0' and pok['form'] != '-1':
+		if pok['pokemon_id'] == '201':
+			formName = ' - {}'.format(chr(int(pok['form']) + 64))
+		elif pok['form'] == '80':
+			formName = ' Alolan'
+	return getPokemonName(int(pok['pokemon_id'])) + formName
 
 def getTimeString(utcTime):
 	tz = pytz.timezone('Australia/Sydney')
@@ -128,7 +147,17 @@ def getTimeDifferenceString(utcTime):
 	return '{}m{}s'.format(int(mins), int(math.floor(secs)))
 
 def getURL():
-	return 'https://sydneypogomap.com/query2.php?since=0&mons={}&bounds={}'.format(','.join(str(x) for x in range(1, max(POKEMON.keys()) + 1)), ','.join(str(x) for x in POKEMON_AREA))
+	return 'https://sydneypogomap.com/query2.php?since=0&mons={}&bounds={}'.format(','.join(str(x) for x in range(1, MAX_MON_ID)), ','.join(str(x) for x in POKEMON_AREA))
+
+def isDespawned(spawn):
+	endTime = None
+	if 'despawn' in spawn:
+		endTime = int(spawn['despawn'])
+	elif spawn['pokemon_id'] == '0':
+		endTime = int(spawn['raid_start'])
+	else:
+		endTime = int(spawn['raid_end'])
+	return datetime.datetime.now() > datetime.datetime.fromtimestamp(endTime)
 
 def isHighIV(pok):
 	pid = int(pok['pokemon_id'])
@@ -155,10 +184,19 @@ def isRaidWithinBoundaries(raid):
 def isRare(pok):
 	return int(pok['pokemon_id']) in POKEMON
 
+def parseResponse(res):
+	# can't get brotli working on GAE
+	# ImportError: dynamic module does not define init function (init_brotli)
+	''' if res.headers['Content-Encoding'] == 'br':
+		return json.loads(brotli.decompress(res.content))
+	else: '''
+	return res.json()
+
 def postDiscord(type, obj):
 	response = requests.post(
-		url = WEBHOOKS[type.value],
-		data = 'content=' + getDiscordString(type, obj)
+		headers = { 'Content-Type':  'application/json' },
+		url = WEBHOOKS[type],
+		data = '{"content":"' + getDiscordString(type, obj) + '"}'
 	)
 
 def validIV(pok):
@@ -166,32 +204,33 @@ def validIV(pok):
 
 class Clear(webapp2.RequestHandler):
 	def get(self):
-		global seenList
-		global seenRaidList
+		global SEEN_LIST
+		global SEEN_RAID_LIST
 		upperBound = int(time.time()) - 600 # 10 min buffer
-		for pok in seenList:
+		for pok in SEEN_LIST:
 			endTime = int(pok['despawn'])
 			if endTime < upperBound:
-				seenList.remove(pok)
-		for raid in seenRaidList:
+				SEEN_LIST.remove(pok)
+		for raid in SEEN_RAID_LIST:
 			endTime = int(raid['raid_end']) - 600
 			if endTime < upperBound:
-				seenRaidList.remove(raid)
+				SEEN_RAID_LIST.remove(raid)
 
 class Pokemon(webapp2.RequestHandler):
 	def get(self):
-		global seenList
+		global SEEN_LIST
+		''' if LATEST_ETAG is None:
+			return '''
 		response = requests.get(
 			url = getURL(),
 			headers = getHeaders('https://sydneypogomap.com/')
 		)
-		monList = response.json()
-		logging.debug(monList)
+		monList = parseResponse(response)
 		if 'pokemons' not in monList:
 			return
 		for pok in monList['pokemons']:
-			if not pok in seenList:
-				seenList.append(pok)
+			if not pok in SEEN_LIST and not isDespawned(pok):
+				SEEN_LIST.append(pok)
 				if isRare(pok):
 					postDiscord(Scan.RARE_MON, pok)
 				if isPerfectIV(pok):
@@ -201,22 +240,59 @@ class Pokemon(webapp2.RequestHandler):
 
 class Raids(webapp2.RequestHandler):
 	def get(self):
-		global seenRaidList
+		global SEEN_RAID_LIST
+		''' if LATEST_ETAG is None:
+			return '''
 		response = requests.get(
 			url = 'https://sydneypogomap.com/raids.php',
 			headers = getHeaders('https://sydneypogomap.com/gym.html')
 		)
-		raidList = response.json()
+		raidList = parseResponse(response)
 		if 'raids' not in raidList:
 			return
 		for raid in raidList['raids']:
-			if not raid in seenRaidList:
-				seenRaidList.append(raid)
+			if not raid in SEEN_RAID_LIST and not isDespawned(raid):
+				SEEN_RAID_LIST.append(raid)
 				if isRaidValuable(raid) and isRaidWithinBoundaries(raid):
 					postDiscord(Scan.RAID, raid)
+
+""" class Update(webapp2.RequestHandler):
+	# Options for this
+	# 1. Have a python file so you can have pokemon ID and name comment and parse it with eval but that's nasty and possibly insecure?
+	# 2. Have a json filled with only names and parse it here turning it into an object the code can work with (json cant have comments)
+	# I went with 2 because it seems like the better option
+	def get(self):
+		global POKEMON
+		global RAIDS
+		global LATEST_ETAG
+		response = requests.get( url = FILTER_URL )
+		if 'ETag' not in response.headers or LATEST_ETAG == response.headers['ETag']:
+			# if not changed since last time then dont bother
+			return
+		resObj = response.json()
+		monObj = {}
+		for mon in resObj['pokemon']:
+			pID = POKEMON_NAMES.index(mon)
+			if pID != -1:
+				monObj[str(pID + 1)] = resObj['pokemon'][mon]
+		POKEMON = monObj
+		raidObj = {}
+		for raid in resObj['raids']:
+			if resObj['raids'][raid] is None:
+				raidObj[raid] = None
+			else:
+				raidObj[raid] = []
+				for mon in resObj['raids'][raid]:
+					pID = POKEMON_NAMES.index(mon)
+					if pID != -1:
+						raidObj[raid].append(str(pID + 1))
+		RAIDS = raidObj
+		MAX_MON_ID = findMaxMonID()
+		LATEST_ETAG = response.headers['ETag'] """
 
 app = webapp2.WSGIApplication([
 	('/clear', Clear),
 	('/raids', Raids),
-	('/mon', Pokemon)
+	('/mon', Pokemon),
+#	('/update', Update)
 ])

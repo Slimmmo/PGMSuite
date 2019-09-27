@@ -51,13 +51,6 @@ class sdist(sdist_add_defaults, orig.sdist):
         for cmd_name in self.get_sub_commands():
             self.run_command(cmd_name)
 
-        # Call check_metadata only if no 'check' command
-        # (distutils <= 2.6)
-        import distutils.command
-
-        if 'check' not in distutils.command.__all__:
-            self.check_metadata()
-
         self.make_distribution()
 
         dist_files = getattr(self.distribution, 'dist_files', [])
@@ -205,3 +198,24 @@ class sdist(sdist_add_defaults, orig.sdist):
                 continue
             self.filelist.append(line)
         manifest.close()
+
+    def check_license(self):
+        """Checks if license_file' is configured and adds it to
+        'self.filelist' if the value contains a valid path.
+        """
+
+        opts = self.distribution.get_option_dict('metadata')
+
+        # ignore the source of the value
+        _, license_file = opts.get('license_file', (None, None))
+
+        if license_file is None:
+            log.debug("'license_file' option was not specified")
+            return
+
+        if not os.path.exists(license_file):
+            log.warn("warning: Failed to find the configured license file '%s'",
+                    license_file)
+            return
+
+        self.filelist.append(license_file)

@@ -7,9 +7,8 @@ RAID_AREA = {
 RAIDS = {
 	4: [
 		248, # Tyranitar
-		306 # Aggron
 	],
-	5: None
+	5: None # None means everything
 }
 GYM_NAMES = {
 	'-33.917501151.226467': 'Tyree Building',
@@ -19,7 +18,7 @@ GYM_NAMES = {
 	'-33.917983151.231283': 'Metal Ball',
 	'-33.916805151.233311': 'Library Lawn',
 	'-33.916831151.233777': 'Nelson Mandela Bust (Library Lawn)',
-	'-33.916666151.235': 'Gate 9',
+	'-33.916666151.235': 'Manu Et Mente',
 	'-33.91795151.234829': 'Museum of Human Disease'
 }
 POKEMON_AREA = [
@@ -35,7 +34,6 @@ POKEMON = {
 	# GEN 1
 	3: None, # Venusaur
 	6: None, # Charizard
-	9: None, # Blastoise
 	26: None, # Raichu
 	59: None, # Arcanine
 	65: None, # Alakazam
@@ -58,12 +56,7 @@ POKEMON = {
 	150: None, # Mewtwo
 	151: None, # Mew
 	# GEN 2
-	154: None, # Meganium
-	157: None, # Typhlosion
-	160: None, # Feraligatr
 	176: None, # Togetic
-	179: None, # Mareep
-	180: None, # Flaaffy
 	181: None, # Ampharos
 	201: None, # Unown
 	232: None, # Donphan
@@ -108,7 +101,6 @@ POKEMON = {
 	371: None, # Bagon
 	372: None, # Shelgon
 	373: None, # Salamence
-	374: None, # Beldum
 	375: None, # Metang
 	376: None, # Metagross
 	377: None, # Regirock
@@ -120,5 +112,56 @@ POKEMON = {
 	383: None, # Groudon
 	384: None, # Rayquaza
 	385: None, # Jirachi
-	386: None # Deoxys
+	386: None, # Deoxys
+	# GEN 4
+	389: None, # Torterra
+	392: None, # Infernape
+	395: None, # Empoleon
+	408: None, # Cranidos
+	409: None, # Rampardos
+	443: None, # Gible
+	444: None, # Gabite
+	445: None, # Garchomp
+	480: None, # Uxie
+	481: None, # Mesprit
+	482: None, # Azelf
+	483: None, # Dialga
+	484: None, # Palkia
+	485: None, # Heatran
+	486: None, # Regigigas
+	487: None, # Giratina
+	488: None, # Cresselia
+	489: None, # Phione
+	490: None, # Manaphy
+	491: None, # Darkrai
+	492: None, # Shaymin
+	493: None, # Arceus
+	# GEN 5
+  # 494: None, # Victini ?
+	497: None, # Serperior
+	500: None, # Emboar
+	503: None, # Samurott
+	532: None, # Timburr
+	533: None, # Gurdurr
+	534: None, # Conkeldurr
+	566: None, # Archen
+	567: None, # Archeops
+	607: None, # Litwick
+	608: None, # Lampent
+	609: None, # Chandelure
+	636: None, # Larvesta
+	637: None, # Volcarona
+	638: None, # Cobalion
+	639: None, # Terrakion
+	640: None, # Virizion
+	641: None, # Tornadus
+	642: None, # Thundurus
+	643: None, # Reshiram
+	644: None, # Zekrom
+	645: None, # Landorus
+	646: None, # Kyurem
+	647: None, # Keldeo
+	648: None, # Meloetta
+	649: None # Genesect
 }
+MAX_MON_ID = 649
