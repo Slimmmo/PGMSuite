@@ -194,7 +194,7 @@ def parseEventSpawns(mons):
 	for pok in mons:
 		pID = getPokemonID(pok)
 		if pID is not None:
-			EVENT_SPAWNS[pok] = mons[pok]
+			EVENT_SPAWNS[pID] = mons[pok]
 		else:
 			postLoadError(Scan.EVENT_MON, pok)
 
@@ -219,7 +219,7 @@ def parsePokemon(mons):
 	for pok in mons:
 		pID = getPokemonID(pok)
 		if pID is not None:
-			POKEMON[pok] = mons[pok]
+			POKEMON[pID] = mons[pok]
 		else:
 			postLoadError(Scan.RARE_MON, pok)
 
