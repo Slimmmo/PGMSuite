@@ -1,7 +1,8 @@
-import datetime, flask, json, math, time, logging
+import datetime, json, math, time, logging
 import googlemaps, pytz, requests
 from decimal import Decimal
 from enum import Enum
+from flask import Flask
 from constants import *
 from userVars import *
 from privateUserVars import *
