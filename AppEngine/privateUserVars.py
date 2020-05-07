@@ -1,3 +1,4 @@
+FILTER_URL = '' # json file for filter
 LOCATION_STRING = 'Australia/Sydney' # timezone for pytz
 GMAP_API_KEY = ''
 WEBHOOKS = [
