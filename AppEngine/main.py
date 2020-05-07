@@ -15,7 +15,7 @@ SEEN_RAID_LIST = []
 
 app = Flask(__name__)
 
-class Scan(Enum):
+class Scan(IntEnum):
 	RAID = 0
 	RARE_MON = 1
 	HIGH_MON = 2
