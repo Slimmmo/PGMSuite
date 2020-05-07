@@ -1,7 +1,7 @@
 import datetime, json, math, time, logging
 import googlemaps, pytz, requests
 from decimal import Decimal
-from enum import Enum
+from enum import IntEnum
 from flask import Flask, jsonify
 from constants import *
 from userVars import *
@@ -121,6 +121,7 @@ def getPokemonID(pName):
 	try:
 		return POKEMON_NAMES.index(pName) + 1
 	except ValueError:
+		logging.error('No ID found for pName: ' + pName)
 		return None
 
 def getPokemonName(pID):
