@@ -1,0 +1,4 @@
+Flask==1.1.2
+googlemaps==4.3.1
+pytz==2020.1
+requests==2.23.0

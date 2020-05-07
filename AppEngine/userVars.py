@@ -1,3 +1,4 @@
+EARLIEST_RAID_TIME = '09:00' # 24 hour time, hours:minutes
 RAID_AREA = {
 	'N': -33.915349,
 	'E': 151.236956,
@@ -17,7 +18,7 @@ GYM_NAMES = {
 	'-33.918366151.23053': 'Naked Lady',
 	'-33.917983151.231283': 'Metal Ball',
 	'-33.916805151.233311': 'Library Lawn',
-	'-33.916831151.233777': 'Nelson Mandela Bust (Library Lawn)',
+	'-33.916831151.233777': 'Nelson Mandela Bust',
 	'-33.916666151.235': 'Manu Et Mente',
 	'-33.91795151.234829': 'Museum of Human Disease'
 }
@@ -34,18 +35,17 @@ POKEMON = {
 	# GEN 1
 	3: None, # Venusaur
 	6: None, # Charizard
+	9: None, # Blastoise
 	26: None, # Raichu
-	59: None, # Arcanine
 	65: None, # Alakazam
 	68: None, # Machamp
 	76: None, # Golem
 	89: None, # Muk
 	94: None, # Gengar
-	112: None, # Rhydon
-	113: None, # Chansey
+	114: None, # Chansey
 	130: None, # Gyarados
 	131: None, # Lapras
-	137: None, # Porygon
+	132: None, # Ditto
 	142: None, # Aerodactyl
 	143: None, # Snorlax
 	144: None, # Articuno
@@ -75,27 +75,12 @@ POKEMON = {
 	256: None, # Combusken
 	257: None, # Blaziken
 	260: None, # Swampert
-	267: None, # Beautifly
-	269: None, # Dustox
-	272: None, # Ludicolo
-	275: None, # Shiftry
-	281: None, # Kirlia
-	282: None, # Gardevoir
 	288: None, # Vigoroth
 	289: None, # Slaking
-	295: None, # Exploud
 	306: None, # Aggron
-	308: None, # Medicham
-	319: None, # Sharpedo
 	321: None, # Wailord
-	328: None, # Trapinch
 	329: None, # Vibrava
 	330: None, # Flygon
-	342: None, # Crawdaunt
-	346: None, # Cradily
-	348: None, # Armaldo
-	349: None, # Feebas
-	350: None, # Milotic
 	358: None, # Chimecho
 	365: None, # Walrein
 	371: None, # Bagon
@@ -117,7 +102,6 @@ POKEMON = {
 	389: None, # Torterra
 	392: None, # Infernape
 	395: None, # Empoleon
-	408: None, # Cranidos
 	409: None, # Rampardos
 	443: None, # Gible
 	444: None, # Gabite
@@ -137,18 +121,24 @@ POKEMON = {
 	492: None, # Shaymin
 	493: None, # Arceus
 	# GEN 5
-  # 494: None, # Victini ?
+	# 494: None, # Victini ?
 	497: None, # Serperior
 	500: None, # Emboar
 	503: None, # Samurott
+	531: None, # Audino
 	532: None, # Timburr
 	533: None, # Gurdurr
 	534: None, # Conkeldurr
-	566: None, # Archen
+	564: None, # Tirtouga
+	565: None, # Carracosta
+	566: None, # Archens
 	567: None, # Archeops
 	607: None, # Litwick
 	608: None, # Lampent
 	609: None, # Chandelure
+	610: None, # Axew
+	611: None, # Fraxure
+	612: None, # Haxorus
 	636: None, # Larvesta
 	637: None, # Volcarona
 	638: None, # Cobalion
@@ -163,5 +153,7 @@ POKEMON = {
 	647: None, # Keldeo
 	648: None, # Meloetta
 	649: None # Genesect
+}
+EVENT_SPAWNS = {
 }
 MAX_MON_ID = 649
