@@ -326,6 +326,7 @@ def pokemon():
 	if 'pokemons' not in monList:
 		return jsonify(success=False)
 	for pok in monList['pokemons']:
+		del pok['m'] # m constantly changes
 		if not pok in SEEN_LIST and not isDespawned(pok):
 			SEEN_LIST.append(pok)
 			if isPerfectIV(pok):
